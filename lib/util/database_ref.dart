@@ -13,5 +13,5 @@ Future<void> openDb() async {
     },
   );
 
-  // await deleteDatabase('tasks.db');
+   //await deleteDatabase('products.db');
 }

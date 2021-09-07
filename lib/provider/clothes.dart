@@ -31,16 +31,17 @@ class Clothes with ChangeNotifier {
 
   Future<void> getData() async {
     List<Map<String, dynamic>> data =
-        await database_ref!.rawQuery('select * from tasks');
+        await database_ref!.rawQuery('select * from products');
     _dummyClothes.clear();
     data.forEach((element) {
       _dummyClothes.add(
         Clothe(
           id: element['id'],
-          name: element['title'],
+          name: element['name'],
+          imageurl: element['imageurl'],
           describe: element['describe'],
           price: element['price'],
-          imageurl: element['imageurl'],
+
         ),
       );
     });
@@ -51,6 +52,7 @@ class Clothes with ChangeNotifier {
     await database_ref!.transaction((txn) async {
       int id = await txn.rawInsert(
           'insert into products (name, imageurl, describe,price) values ("$name", "$imageurl", "$describe", "$price")');
+      //print(id);
     });
 
     notifyListeners();
@@ -72,26 +74,5 @@ class Clothes with ChangeNotifier {
 
   final List<Clothe> _favoriteClothes = [];
 
-  final List<Clothe> _dummyClothes = [
-    Clothe(
-        id: 1,
-        //items: ['1'],
-        name: 'T-Shirt',
-        imageurl: 'https://m.media-amazon.com/images/I/61QZ72APrOL._UX569_.jpg',
-        describe: 'Cotton',
-        price: '10',
-        isFav: false),
-    Clothe(
-      id: 2,
-      // items: [
-      //   '2',
-      // ],
-      name: 'Shirt',
-      imageurl:
-          'https://cdn.shopclues.com/images1/thumbnails/88017/640/1/138854428-88017481-1527669982.jpg',
-      describe: 'Silk',
-      price: '12',
-      isFav: false,
-    ),
-  ];
+  final List<Clothe> _dummyClothes = [];
 }

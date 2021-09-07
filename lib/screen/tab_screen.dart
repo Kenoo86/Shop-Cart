@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopping_cart/provider/clothes.dart';
+
 //screens
 import '../screen/clothes_screen.dart';
 import '../screen/favorite_screen.dart';
+
 //widget
 import '../widget/drawer_widget.dart';
 
@@ -15,6 +19,7 @@ class TabScreen extends StatefulWidget {
 class _TabScreenState extends State<TabScreen> {
   int _currentIndex = 0;
   late List<Map<String, dynamic>> _pages;
+
   @override
   void initState() {
     _pages = [
@@ -58,7 +63,19 @@ class _TabScreenState extends State<TabScreen> {
         ),
       ]),
       drawer: DrawerWidget(),
-      body: _pages[_currentIndex]['page'],
+      body: FutureBuilder(
+        future: Provider.of<Clothes>(context).getData(),
+        builder: (_, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return _pages[_currentIndex]['page'];
+        },
+      ),
+      //_pages[_currentIndex]['page'],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _changeIndex,
