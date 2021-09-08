@@ -12,7 +12,6 @@ class Clothe with ChangeNotifier {
 
   Clothe({
     required this.id,
-    //required this.items,
     required this.name,
     required this.imageurl,
     required this.describe,
@@ -39,8 +38,9 @@ class Clothes with ChangeNotifier {
           id: element['id'],
           name: element['name'],
           imageurl: element['imageurl'],
-          describe: element['describe'],
           price: element['price'],
+          describe: element['describe'],
+
 
         ),
       );
@@ -52,7 +52,7 @@ class Clothes with ChangeNotifier {
     await database_ref!.transaction((txn) async {
       int id = await txn.rawInsert(
           'insert into products (name, imageurl, describe,price) values ("$name", "$imageurl", "$describe", "$price")');
-      //print(id);
+
     });
 
     notifyListeners();
@@ -69,6 +69,16 @@ class Clothes with ChangeNotifier {
   Future<void> removeClothe(int id) async {
     await database_ref!.rawDelete('DELETE FROM products WHERE id = $id');
 
+    notifyListeners();
+  }
+
+  void addFavorite(int id) {
+    _favoriteClothes.add(_dummyClothes.firstWhere((element) => element.id == id));
+    notifyListeners();
+  }
+
+  void removeFavorite(int id) {
+    _favoriteClothes.removeWhere((element) => element.id == id);
     notifyListeners();
   }
 

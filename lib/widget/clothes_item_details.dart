@@ -36,7 +36,7 @@ class _ClothesItemDetailsState extends State<ClothesItemDetails> {
               ),
             ),
             Text(
-              clothes.price.toString(),
+              clothes.price,
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.grey.shade500,

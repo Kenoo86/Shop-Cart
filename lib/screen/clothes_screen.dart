@@ -18,13 +18,10 @@ class ShoppingScreen extends StatelessWidget {
     return Scaffold(
       body: GridView.builder(
         itemCount: clothes.length,
-        itemBuilder: (_, i) => ClothesItems(
-            clothes[i].id,
-            clothes[i].name,
-            clothes[i].imageurl,
-            clothes[i].price,
-            clothes[i].describe,
-            clothes[i].isFav),
+        itemBuilder: (_, i) => ChangeNotifierProvider.value(
+          value: clothes[i],
+            child: ClothesItems(),
+        ),
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 300,
           crossAxisSpacing: 10,

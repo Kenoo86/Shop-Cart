@@ -16,9 +16,11 @@ class _AddScreenState extends State<AddScreen> {
   var arg;
   Clothe? product;
   var _titleController = TextEditingController();
-  var _priceController = TextEditingController();
-  var _description = TextEditingController();
   var _imageurl = TextEditingController();
+  var _description = TextEditingController();
+  var _priceController = TextEditingController();
+
+
 
   @override
   void didChangeDependencies() {
@@ -29,9 +31,10 @@ class _AddScreenState extends State<AddScreen> {
         product =
             Provider.of<Clothes>(context, listen: false).findById(arg['id']);
         _titleController.text = product!.name;
-        _priceController.text = product!.price;
-        _description.text = product!.describe;
         _imageurl.text = product!.imageurl;
+        _description.text = product!.describe;
+        _priceController.text = product!.price;
+
       }
       _isFirst = false;
     }
@@ -43,7 +46,7 @@ class _AddScreenState extends State<AddScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(product == null ? 'Add Screen' : 'Edit Screen'),
-        //Text('Add Screen'),
+
         actions: [
           Padding(
             padding: const EdgeInsetsDirectional.only(end: 10),
@@ -53,23 +56,22 @@ class _AddScreenState extends State<AddScreen> {
                 arg == null
                     ? Provider.of<Clothes>(context, listen: false).addClothe(
                         _titleController.text,
-                        _imageurl.text,
-                        _priceController.text,
-                        _description.text,
+                  _imageurl.text,
+                  _description.text,
+                  _priceController.text,
                       )
                     : Provider.of<Clothes>(context, listen: false).updateClothe(
                         arg['id'],
                         _titleController.text,
-                        _imageurl.text,
-                        _description.text,
-                        _priceController.text,
+                  _imageurl.text,
+                  _description.text,
+                  _priceController.text,
                       );
                 Navigator.pop(context);
               },
               child: Icon(Icons.save,color: Colors.white,),
             ),
           ),
-          //Icon(Icons.save),
         ],
       ),
       body: Column(
@@ -92,11 +94,11 @@ class _AddScreenState extends State<AddScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               child: TextField(
-                controller: _priceController,
+                controller: _imageurl,
                 decoration: InputDecoration(
-                  labelText: 'Price',
+                  labelText: 'ImageUrl',
                 ),
-                keyboardType: TextInputType.numberWithOptions(),
+                keyboardType: TextInputType.text,
               ),
             ),
           ),
@@ -118,11 +120,11 @@ class _AddScreenState extends State<AddScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               child: TextField(
-                controller: _imageurl,
+                controller: _priceController,
                 decoration: InputDecoration(
-                  labelText: 'ImageUrl',
+                  labelText: 'Price',
                 ),
-                keyboardType: TextInputType.text,
+                keyboardType: TextInputType.numberWithOptions(),
               ),
             ),
           ),
@@ -131,35 +133,3 @@ class _AddScreenState extends State<AddScreen> {
     );
   }
 }
-
-// import 'package:flutter/material.dart';
-// //widget
-// import '../widget/add_item.dart';
-
-// class AddScreen extends StatelessWidget {
-//   static const routeName = ('AddScreen');
-//   const AddScreen({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: Text('Add Screen'),
-//           actions: [
-//             Padding(
-//               padding: const EdgeInsetsDirectional.only(end: 10),
-//               child: Icon(Icons.save),
-//             ),
-//           ],
-//         ),
-//         body: AddItem()
-//         // ListView.builder(
-//         //   itemCount: clothes.length,
-//         //   itemBuilder: (_, i) => ChangeNotifierProvider.value(
-//         //     value: clothes[i],
-//         //     child: AddItem(),
-//         //   ),
-//         // ),
-//         );
-//   }
-// }

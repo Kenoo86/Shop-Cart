@@ -10,12 +10,8 @@ import '../screen/clothes_details.dart';
 import '../screen/tab_screen.dart';
 
 class ClothesItems extends StatefulWidget {
-  final int id;
-  final name, imageurl, price, describe;
-  final bool isFav;
 
   const ClothesItems(
-      this.id, this.name, this.imageurl, this.price, this.describe, this.isFav,
       {Key? key})
       : super(key: key);
 
@@ -27,17 +23,16 @@ class _ClothesItemsState extends State<ClothesItems> {
   //late final String id;
   @override
   Widget build(BuildContext context) {
+    final clothe = Provider.of<Clothe>(context);
 
-
-    //Clothe _clothe = Provider.of(context);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: InkWell(
         onTap: () => Navigator.of(context)
             .pushNamed(ClothesDetails.routeName, arguments: {
-          'title': widget.name,
-          'id': widget.id,
+          'title': clothe.name,
+          'id': clothe.id,
         }),
         child: Card(
           child: Stack(
@@ -47,7 +42,7 @@ class _ClothesItemsState extends State<ClothesItems> {
                 height: 300,
                 child: Image.network(
                  // _clothe.imageurl,
-                  widget.imageurl,
+                  clothe.imageurl,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -60,20 +55,21 @@ class _ClothesItemsState extends State<ClothesItems> {
                   children: [
                     IconButton(
                         onPressed: () {
-                          // if (widget.isFav) {
-                          //   Provider.of<Clothes>(context, listen: false)
-                          //       .removeClothe(widget.id);
-                          // } else {
-                          //   Provider.of<Clothes>(context, listen: false)
-                          //       .addClothe(widget.name, widget.describe,
-                          //           widget.imageurl, widget.price);
-                          // }
-                          // setState(() {
-                          //   // widget.isFav = !widget.isFav;
-                          // });
+                          if (clothe.isFav) {
+                            Provider.of<Clothes>(context, listen: false)
+                                .removeFavorite(clothe.id);
+                          } else {
+                            Provider.of<Clothes>(context, listen: false)
+                                .addFavorite(clothe.id
+                            );
+                          }
+                          setState(() {
+                            clothe.isFav = !clothe.isFav;
+                            print(clothe.isFav);
+                          });
                         },
                         icon: Icon(
-                          //clothes.isFav ? Icons.favorite :
+                          clothe.isFav ? Icons.favorite :
                           Icons.favorite_border,
                           color: Colors.orange,
                         )),
@@ -82,7 +78,7 @@ class _ClothesItemsState extends State<ClothesItems> {
                     ),
                     Text(
                       //_clothe.name,
-                      widget.name,
+                      clothe.name,
                       style: GoogleFonts.raleway(
                         color: Colors.white,
                         fontSize: 20,
